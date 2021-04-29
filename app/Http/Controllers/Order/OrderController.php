@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Order;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Order\OrderResource;
+use App\Media;
 use App\Order;
 use App\OrderDetail;
 use App\Traits\FirebaseTrait;
+use App\Traits\UploadFileTrait;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -15,7 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class OrderController extends Controller
 {
-    use FirebaseTrait;
+    use FirebaseTrait, UploadFileTrait;
 
     public function __construct()
     {
@@ -35,22 +37,32 @@ class OrderController extends Controller
                 'last_day_borrow' => $this->checkDuration($request->duration)['last_day_borrow'],
             ]);
     
-            OrderDetail::create([
+            
+            $orderDetail = OrderDetail::create([
                 'order_id' => $order->id,
                 'address' => $request->address,
                 'lat' => $request->lat,
                 'lng' => $request->lng,
             ]);
 
+            Media::create([
+                'model_type' => OrderDetail::class,
+                'model_id' => $orderDetail->id,
+                'filename' => $this->uploadImage($request->ktp)
+            ]);
+
             $owner = User::where('id', $request->owner_id)->first();
             $message = "ada yg mau pinjam buku anda";
             $this->notification($message, $owner->fcm_token);
+
+
             DB::commit();
             return response()->json([
                 'message' => 'successfully to order',
                 'status' => true,
                 'data' => (object)[]
             ], Response::HTTP_CREATED);
+            
         } catch (\Throwable $th) {
             DB::rollBack();
             return response()->json([
