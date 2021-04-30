@@ -9,15 +9,12 @@ use App\Media;
 use App\Traits\UploadFileTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
 
 class BookController extends Controller
 {
     use UploadFileTrait;
     
-    public function __construct()
-    {
-        $this->middleware('auth:api');
-    }
     public function new()
     {
         $books = Book::where('owner_id', '!=', auth()->id())->latest()->get();
@@ -25,7 +22,7 @@ class BookController extends Controller
             'message' => 'successfully get books',
             'status' => true,
             'data' => BookResource::collection($books)
-        ]);
+        ], Response::HTTP_OK);
     }
 
     public function recommended()
@@ -36,7 +33,7 @@ class BookController extends Controller
             'message' => 'successfully get books',
             'status' => true,
             'data' => BookResource::collection($books)
-        ]);
+        ],Response::HTTP_OK);
     }
 
     public function most()
@@ -47,7 +44,7 @@ class BookController extends Controller
             'message' => 'successfully get books',
             'status' => true,
             'data' => BookResource::collection($books)
-        ]);
+        ], Response::HTTP_OK);
     }
 
     public function me()
@@ -57,7 +54,7 @@ class BookController extends Controller
             'message' => 'successfully get books',
             'status' => true,
             'data' => BookResource::collection($books)
-        ]);
+        ], Response::HTTP_OK);
     }
 
     public function store(Request $request)
@@ -89,14 +86,14 @@ class BookController extends Controller
                 'message' => 'successfully created book',
                 'status' => true,
                 'data' => (object)[]
-            ]);
+            ],Response::HTTP_CREATED);
         } catch (\Throwable $th) {
             DB::rollBack();
             return response()->json([
                 'message' => $th->getMessage(),
                 'status' => false,
                 'data' => (object)[]
-            ]);
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -110,7 +107,7 @@ class BookController extends Controller
             'message' => 'successfully get book',
             'status' => true,
             'data' => new BookResource($book)
-        ]);
+        ],Response::HTTP_OK);
     }
 
     public function delete($id)
@@ -121,6 +118,6 @@ class BookController extends Controller
             'message' => 'successfully deleted book',
             'status' => true,
             'data' => (object)[]
-        ]);
+        ], Response::HTTP_OK);
     }
 }

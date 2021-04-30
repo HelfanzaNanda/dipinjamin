@@ -7,6 +7,7 @@ use App\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Book\BookResource;
+use Symfony\Component\HttpFoundation\Response;
 use App\Http\Resources\Category\CategoryResource;
 
 class CategoryController extends Controller
@@ -18,7 +19,7 @@ class CategoryController extends Controller
             'message' => 'successfully get categories',
             'status' => true,
             'data' => CategoryResource::collection($categories)
-        ]);
+        ],Response::HTTP_OK);
     }
 
     public function get($id)
@@ -29,7 +30,6 @@ class CategoryController extends Controller
             'message' => 'successfully get book by category',
             'status' => true, 
             'data' => BookResource::collection($books)
-        ]);
-
+        ], Response::HTTP_OK);
     }
 }

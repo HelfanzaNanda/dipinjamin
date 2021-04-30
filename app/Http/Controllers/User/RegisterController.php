@@ -32,7 +32,7 @@ class RegisterController extends Controller
                 'message' => $th->getMessage(),
                 'status' => false,
                 'data' => (object)[]
-            ], Response::HTTP_BAD_REQUEST);
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

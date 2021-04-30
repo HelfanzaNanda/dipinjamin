@@ -106,7 +106,6 @@ class OrderController extends Controller
             'message' => 'successfully get order me',
             'status' => true,
             'data' => OrderResource::collection($orders)
-        ]);
-
+        ], Response::HTTP_OK);
     }
 }

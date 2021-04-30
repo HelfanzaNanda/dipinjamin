@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Book;
 
+use App\Http\Resources\Media\MediaResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class BookResource extends JsonResource
@@ -14,6 +15,15 @@ class BookResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'category_id' => $this->category_id,
+            'owner_id' => $this->owner_id,
+            'title' => $this->title,
+            'description' => $this->description,
+            'writer' => $this->writer,
+            'viewer' => $this->viewer,
+            'images' => MediaResource::collection($this->medias)
+        ];
     }
 }
