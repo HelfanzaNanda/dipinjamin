@@ -16,10 +16,15 @@ Route::prefix('books')->group(function(){
     Route::get('new', 'Book\BookController@new');
     Route::get('recommended', 'Book\BookController@recommended');
     Route::get('most', 'Book\BookController@most');
-    Route::get('me', 'Book\BookController@me');
     Route::get('{id}/get', 'Book\BookController@get');
-    Route::post('store', 'Book\BookController@store');
-    Route::delete('delete', 'Book\BookController@delete');
+    
+    Route::middleware('auth:api')->group(function(){
+        Route::get('me', 'Book\BookController@me');
+        Route::post('store', 'Book\BookController@store');
+        Route::delete('delete', 'Book\BookController@delete');
+    });
+    
+    
 });
 
 Route::prefix('categories')->group(function(){

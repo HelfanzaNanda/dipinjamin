@@ -15,6 +15,7 @@ class BookResource extends JsonResource
      */
     public function toArray($request)
     {
+        //dd($this->medias);
         return [
             'id' => $this->id,
             'category_id' => $this->category_id,

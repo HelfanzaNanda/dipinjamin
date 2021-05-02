@@ -11,6 +11,7 @@ class Book extends Model
 
     public function medias()
     {
-       return $this->hasMany(Media::class, 'model_id', 'id')->where('model_type', self::class);
+       return $this->hasMany(Media::class, 'model_id', 'id')
+       ->where('model_type', self::class);
     }
 }
