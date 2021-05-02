@@ -22,6 +22,9 @@ class BookResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'writer' => $this->writer,
+            'publisher' => $this->publisher,
+            'year' => $this->year,
+            'number_of_pages' => $this->number_of_pages,
             'viewer' => $this->viewer,
             'images' => MediaResource::collection($this->medias)
         ];

@@ -20,7 +20,10 @@ class CreateBooksTable extends Migration
             $table->foreignId('owner_id');
             $table->string('title');
             $table->mediumText('description');
+            $table->string('publisher');
             $table->string('writer');
+            $table->string('year');
+            $table->string('number_of_pages');
             $table->integer('viewer')->default(0);
             $table->timestamps();
         });

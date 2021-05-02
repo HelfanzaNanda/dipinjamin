@@ -12,12 +12,6 @@ class CategorySeeder extends Seeder
      */
     public function run()
     {
-        $categories = ['Horor', 'Fantasi', 'Sci-Fi', 'Romance', 'Humor', 'Misteri', 'Petualangan',
-        'Biografi', 'Ensiklopedia', 'Jurnal', 'Kamus', 'Filsafat'];
-        foreach ($categories as $key => $category) {
-            Category::create([
-                'category' => $categories[$key]
-            ]);
-        }
+        
     }
 }

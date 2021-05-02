@@ -39,7 +39,7 @@ class BookController extends Controller
     public function most()
     {
         $books = Book::where('owner_id', '!=', auth()->id())
-        ->latest()->get();
+        ->where('viewer', '>=', 5)->get();
         return response()->json([
             'message' => 'successfully get books',
             'status' => true,
