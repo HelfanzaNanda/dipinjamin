@@ -23,8 +23,6 @@ Route::prefix('books')->group(function(){
         Route::post('store', 'Book\BookController@store');
         Route::delete('delete', 'Book\BookController@delete');
     });
-    
-    
 });
 
 Route::prefix('categories')->group(function(){

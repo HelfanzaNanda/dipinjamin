@@ -72,14 +72,17 @@ class BookController extends Controller
             if($request->id){
                 Media::where('model_type', Book::class)->where('model_id', $request->id)->delete();
             }
-            $images = $request->images;
-            foreach ($images as $image) {
-                Media::create([
-                    'model_type' => Book::class,
-                    'model_id' => $book->id,
-                    'filename' => $this->uploadImage($image)
-                ]);
-            }
+			if ($request->images) {
+				$images = $request->images;
+				foreach ($images as $image) {
+					Media::create([
+						'model_type' => Book::class,
+						'model_id' => $book->id,
+						'filename' => $this->uploadImage($image)
+					]);
+				}
+			}
+            
 
             DB::commit();
             return response()->json([

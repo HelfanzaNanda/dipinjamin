@@ -5,16 +5,30 @@ namespace App\Http\Controllers\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
 class LoginController extends Controller
 {
     public function login(Request $request)
     {
+
+		$validator = Validator::make($request->all(), [
+			'email' => 'required|email',
+			'password' => 'required|min:6'
+		]);
+
+		if ($validator->fails()) {
+			return response()->json([
+                'message' => 'http unprocessable entity',
+                'status' => false,
+                'data' => $validator->getMessageBag()
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+		}
+
         $credential = [
             'email' => $request->email,
             'password' => $request->password,
-
         ];
 
         if (Auth::attempt($credential)){
