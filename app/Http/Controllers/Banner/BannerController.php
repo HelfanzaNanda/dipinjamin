@@ -10,7 +10,7 @@ class BannerController extends Controller
 {
     public function index()
     {
-        $banners = Media::where('model_type', 'App\Models\Banner')->get();
+        $banners = Media::where('model_type', 'App\Banner')->get();
         return response()->json([
             'message' => 'successfully get banners',
             'status' => true,
