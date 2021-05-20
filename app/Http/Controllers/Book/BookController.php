@@ -9,6 +9,7 @@ use App\Media;
 use App\Traits\UploadFileTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
 class BookController extends Controller
@@ -59,6 +60,26 @@ class BookController extends Controller
 
     public function store(Request $request)
     {
+
+		$validator = Validator::make($request->all(), [
+			'category_id' => 'required',
+			'title' => 'required',
+			'description' => 'required',
+			'writer' => 'required',
+			'publisher' => 'required',
+			'year' => 'required',
+			'number_of_pages' => 'required',
+			'image' => 'required|image|mimes:jpg,jpeg,png|max:1024',
+		]);
+
+		if ($validator->fails()) {
+			return response()->json([
+                'message' => 'http unprocessable entity',
+                'status' => false,
+                'data' => $validator->getMessageBag()
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+		}
+
         DB::beginTransaction();
         try {
             $book = Book::updateOrCreate(['id' => $request->id], [
@@ -67,23 +88,21 @@ class BookController extends Controller
                 'title' => $request->title,
                 'description' => $request->description,
                 'writer' => $request->writer,
+				'publisher' => $request->publisher,
+				'year' => $request->year,
+				'number_of_pages' => $request->number_of_pages,
             ]);
 
             if($request->id){
                 Media::where('model_type', Book::class)->where('model_id', $request->id)->delete();
             }
-			if ($request->images) {
-				$images = $request->images;
-				foreach ($images as $image) {
-					Media::create([
-						'model_type' => Book::class,
-						'model_id' => $book->id,
-						'filename' => $this->uploadImage($image)
-					]);
-				}
-			}
-            
 
+			Media::create([
+				'model_type' => Book::class,
+				'model_id' => $book->id,
+				'filename' => $this->uploadImage($request->file('image'))
+			]);
+			
             DB::commit();
             return response()->json([
                 'message' => 'successfully created book',
@@ -104,7 +123,7 @@ class BookController extends Controller
     {
         $book = Book::where('id', $id)->first();
         $book->update([
-            'viewer' => $book++
+            'viewer' => $book->viewer + 1
         ]);
         return response()->json([
             'message' => 'successfully get book',

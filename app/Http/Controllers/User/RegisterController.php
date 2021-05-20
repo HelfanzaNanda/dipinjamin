@@ -22,7 +22,8 @@ class RegisterController extends Controller
 		$validator = Validator::make($request->all(), [
 			'name' => 'string|required|regex:/^[\pL\s\-]+$/u',
 			'email' => 'required|email|unique:users',
-			'password' => 'required|min:6'
+			'password' => 'required|min:6',
+			'phone' => 'required|min:10|max:13'
 		]);
 
 		if ($validator->fails()) {
@@ -33,11 +34,12 @@ class RegisterController extends Controller
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
 		}
 
-		DB::transaction();
+		DB::beginTransaction();
         try {
             User::create([
                 'name' => $request->name,
                 'email' => $request->email,
+				'phone' => $request->phone,
                 'password' => Hash::make($request->password),
                 'fcm_token' => $request->fcm,
                 'api_token' => Str::random(60),

@@ -13,6 +13,7 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
 class OrderController extends Controller
@@ -26,11 +27,30 @@ class OrderController extends Controller
 
     public function store(Request $request)
     {
+
+		$validator = Validator::make($request->all(), [
+			'book_id' => 'required',
+			'owner_id' => 'required',
+			'duration' => 'required',
+			'address' => 'required',
+			'lat' => 'required',
+			'lng' => 'required',
+			'ktp' => 'required',
+		]);
+
+		if ($validator->fails()) {
+			return response()->json([
+                'message' => 'http unprocessable entity',
+                'status' => false,
+                'data' => $validator->getMessageBag()
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+		}
+
         DB::beginTransaction();
         try {
             $order = Order::create([
                 'book_id' => $request->book_id,
-                'borrower_id' => $request->borrower_id,
+                'borrower_id' => auth()->id(),
                 'owner_id' => $request->owner_id,
                 'duration' => $this->checkDuration($request->duration)['duration_in_week'],
                 'first_day_borrow' => now(),
@@ -99,9 +119,21 @@ class OrderController extends Controller
         ];
     }
 
-    public function me()
+    public function byBorrower()
     {
-        $orders =  Order::with('order_details')->where('user_id', auth()->id())->get();
+        $orders =  Order::with('order_details')
+		->where('borrower_id', auth()->id())->get();
+        return response()->json([
+            'message' => 'successfully get order me',
+            'status' => true,
+            'data' => OrderResource::collection($orders)
+        ], Response::HTTP_OK);
+    }
+
+	public function byOwner()
+    {
+        $orders =  Order::with('order_details')
+		->where('owner_id', auth()->id())->get();
         return response()->json([
             'message' => 'successfully get order me',
             'status' => true,
@@ -109,3 +141,4 @@ class OrderController extends Controller
         ], Response::HTTP_OK);
     }
 }
+

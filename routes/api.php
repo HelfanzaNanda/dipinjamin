@@ -4,9 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 Route::post('register', 'User\RegisterController@register');
 Route::post('login', 'User\LoginController@login');
@@ -21,7 +21,7 @@ Route::prefix('books')->group(function(){
     Route::middleware('auth:api')->group(function(){
         Route::get('me', 'Book\BookController@me');
         Route::post('store', 'Book\BookController@store');
-        Route::delete('delete', 'Book\BookController@delete');
+        Route::delete('/{id}/delete', 'Book\BookController@delete');
     });
 });
 
@@ -31,6 +31,26 @@ Route::prefix('categories')->group(function(){
 });
 
 Route::prefix('orders')->group(function(){
+	Route::get('by-borrower', 'Order\OrderController@byBorrower');
+	Route::get('by-owner', 'Order\OrderController@byOwner');
     Route::post('', 'Order\OrderController@store');
-    Route::get('me', 'Order\OrderController@me');
+});
+
+
+Route::prefix('user')->middleware('auth:api')->group(function(){
+	Route::get('', 'User\UserController@currentUser');
+	Route::post('/password', 'User\UserController@updatePassword');
+	Route::post('', 'User\UserController@updateUser');
+});
+
+Route::prefix('delivery-addresses')->middleware('auth:api')->group(function(){
+	Route::get('', 'DeliveryAddresses\DeliveryAddressesController@index');
+	Route::post('', 'DeliveryAddresses\DeliveryAddressesController@store');
+	Route::delete('{id}/delete', 'DeliveryAddresses\DeliveryAddressesController@delete');
+});
+
+Route::prefix('carts')->middleware('auth:api')->group(function(){
+	Route::get('', 'Cart\CartController@index');
+	Route::post('', 'Cart\CartController@store');
+	Route::post('{id}/delete', 'Cart\CartController@delete');
 });

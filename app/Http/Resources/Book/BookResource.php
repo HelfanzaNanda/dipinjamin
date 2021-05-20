@@ -2,7 +2,10 @@
 
 namespace App\Http\Resources\Book;
 
+use App\Http\Resources\Category\CategoryResource;
 use App\Http\Resources\Media\MediaResource;
+use App\Order;
+use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class BookResource extends JsonResource
@@ -15,11 +18,20 @@ class BookResource extends JsonResource
      */
     public function toArray($request)
     {
-        //dd($this->medias);
+		$order = Order::where('book_id', $this->id)->latest()->first();
+        if ($order) {
+			if (Carbon::now()->lt($order->last_day_borrow)) {
+				$isAvaiable = false;
+			}else{
+				$isAvaiable = true;
+			}
+		}else{
+			$isAvaiable = true;
+		}
         return [
             'id' => $this->id,
-            'category_id' => $this->category_id,
-            'owner_id' => $this->owner_id,
+            'category' => new CategoryResource($this->category),
+            'owner' => $this->owner->name,
             'title' => $this->title,
             'description' => $this->description,
             'writer' => $this->writer,
@@ -27,7 +39,8 @@ class BookResource extends JsonResource
             'year' => $this->year,
             'number_of_pages' => $this->number_of_pages,
             'viewer' => $this->viewer,
-            'images' => MediaResource::collection($this->medias)
+            'image' => url($this->media->filename),
+			'is_available' => $isAvaiable,
         ];
     }
 }

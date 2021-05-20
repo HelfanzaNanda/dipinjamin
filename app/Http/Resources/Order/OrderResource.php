@@ -17,7 +17,7 @@ class OrderResource extends JsonResource
         return [
             'id' => $this->id,
             'book_id' => $this->book_id,
-            'book_name' => $this->book->name,
+            'book_name' => $this->book->title,
             'borrower_id' => $this->borrower_id,
             'borrower_name' => $this->borrower->name,
             'owner_id' => $this->owner_id,
@@ -28,6 +28,6 @@ class OrderResource extends JsonResource
             'address' => $this->address,
             'lat' => $this->lat,
             'lng' => $this->lng,
-        ]
+		];
     }
 }
