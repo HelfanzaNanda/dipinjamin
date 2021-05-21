@@ -39,7 +39,7 @@ class BookResource extends JsonResource
             'year' => $this->year,
             'number_of_pages' => $this->number_of_pages,
             'viewer' => $this->viewer,
-            'image' => url($this->media->filename),
+            'image' => url('/public').'/'.$this->media->filename,
 			'is_available' => $isAvaiable,
         ];
     }
