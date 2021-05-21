@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\User;
 
+use App\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -55,5 +58,40 @@ class LoginController extends Controller
             'status' => false,
             'data' => (object)[]
         ], Response::HTTP_UNAUTHORIZED);
+    }
+
+	public function loginProvider(Request $request)
+    {
+
+		$user = User::where('provider_id', $request->provider_id)
+		->where('provider_name', $request->provider_name);
+		if ($user) {
+			$user->update([
+				'fcm_token' => $request->fcm
+			]);
+			return response()->json([
+				'message' => 'Login Successfully',
+				'status' => true,
+				'data' => $user,
+			], Response::HTTP_OK);
+		}else{
+			$user = User::create([
+				'provider_id' => $request->provider_id,
+				'provider_name' => $request->provider_name,
+				'name' => $request->name,
+				'email' => $request->email,
+				'password' => Hash::make('12345678'),
+				'email_verified_at' => now(),
+				'fcm_token' => $request->fcm,
+                'api_token' => Str::random(60),
+			]);
+
+			return response()->json([
+				'message' => 'Login Successfully',
+				'status' => true,
+				'data' => $user,
+			], Response::HTTP_OK);
+
+		}
     }
 }

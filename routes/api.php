@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('register', 'User\RegisterController@register');
 Route::post('login', 'User\LoginController@login');
+Route::post('login/provider', 'User\LoginController@loginProvider');
 Route::get('banners', 'Banner\BannerController@index');
 
 Route::prefix('books')->group(function(){
