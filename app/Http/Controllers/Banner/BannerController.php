@@ -12,7 +12,7 @@ class BannerController extends Controller
     {
         $banners = Media::where('model_type', 'App\Banner')->get('filename');
 		$banners = $banners->map(function($value){
-			return ['filename' => url('/public/').$value->filename];
+			return ['filename' => url('/public') .'/'.$value->filename];
 		});
 		
         return response()->json([
