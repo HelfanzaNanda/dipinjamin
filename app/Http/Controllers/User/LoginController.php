@@ -64,7 +64,7 @@ class LoginController extends Controller
     {
 		try {
 			$user = User::where('provider_id', $request->provider_id)
-			->where('provider_name', $request->provider_name);
+			->where('provider_name', $request->provider_name)->first();
 			if ($user) {
 				$user->update([
 					'fcm_token' => $request->fcm
