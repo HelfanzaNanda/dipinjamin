@@ -18,7 +18,7 @@ class LoginController extends Controller
 
 		$validator = Validator::make($request->all(), [
 			'email' => 'required|email',
-			'password' => 'required|min:6'
+			'password' => 'required|min:8'
 		]);
 
 		if ($validator->fails()) {
@@ -62,36 +62,44 @@ class LoginController extends Controller
 
 	public function loginProvider(Request $request)
     {
+		try {
+			$user = User::where('provider_id', $request->provider_id)
+			->where('provider_name', $request->provider_name);
+			if ($user) {
+				$user->update([
+					'fcm_token' => $request->fcm
+				]);
+				return response()->json([
+					'message' => 'Login Successfully',
+					'status' => true,
+					'data' => $user,
+				], Response::HTTP_OK);
+			}else{
+				$newUser = User::create([
+					'provider_id' => $request->provider_id,
+					'provider_name' => $request->provider_name,
+					'name' => $request->name,
+					'email' => $request->email,
+					'password' => Hash::make('12345678'),
+					'email_verified_at' => now(),
+					'fcm_token' => $request->fcm,
+					'api_token' => Str::random(60),
+				]);
 
-		$user = User::where('provider_id', $request->provider_id)
-		->where('provider_name', $request->provider_name);
-		if ($user) {
-			$user->update([
-				'fcm_token' => $request->fcm
-			]);
+				return response()->json([
+					'message' => 'Login Successfully',
+					'status' => true,
+					'data' => $newUser,
+				], Response::HTTP_OK);
+
+			}
+		} catch (\Throwable $th) {
 			return response()->json([
-				'message' => 'Login Successfully',
-				'status' => true,
-				'data' => $user,
-			], Response::HTTP_OK);
-		}else{
-			$user = User::create([
-				'provider_id' => $request->provider_id,
-				'provider_name' => $request->provider_name,
-				'name' => $request->name,
-				'email' => $request->email,
-				'password' => Hash::make('12345678'),
-				'email_verified_at' => now(),
-				'fcm_token' => $request->fcm,
-                'api_token' => Str::random(60),
-			]);
-
-			return response()->json([
-				'message' => 'Login Successfully',
-				'status' => true,
-				'data' => $user,
-			], Response::HTTP_OK);
-
+				'message' => $th->getMessage(),
+				'status' => false,
+				'data' => (object)[],
+			], Response::HTTP_INTERNAL_SERVER_ERROR);
 		}
+		
     }
 }
