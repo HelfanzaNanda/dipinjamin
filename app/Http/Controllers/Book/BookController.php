@@ -18,8 +18,8 @@ class BookController extends Controller
     
     public function new()
     {
-		if (auth()->check()) {
-			$books = Book::where('owner_id', '!=', auth()->id())->latest()->get();
+		if (auth()->guard('api')->check()) {
+			$books = Book::where('owner_id', '!=', auth()->guard('api')->id())->latest()->get();
 		}else{
 			$books = Book::latest()->get();
 		}
@@ -34,8 +34,13 @@ class BookController extends Controller
 
     public function recommended()
     {
-        $books = Book::where('owner_id', '!=', auth()->id())
-        ->where('viewer', '>=', 5)->get();
+		if (auth()->guard('api')->check()) {
+			$books = Book::where('owner_id', '!=', auth()->guard('api')->id())->where('viewer', '>=', 5)->get();
+		}else{
+			$books = Book::latest()->where('viewer', '>=', 5)->get();
+		}
+
+        
         return response()->json([
             'message' => 'successfully get books',
             'status' => true,
@@ -45,8 +50,12 @@ class BookController extends Controller
 
     public function most()
     {
-        $books = Book::where('owner_id', '!=', auth()->id())
-        ->where('viewer', '>=', 5)->get();
+		if (auth()->guard('api')->check()) {
+			$books = Book::where('owner_id', '!=', auth()->guard('api')->id())->where('viewer', '>=', 5)->get();
+		}else{
+			$books = Book::latest()->where('viewer', '>=', 5)->get();
+		}
+       
         return response()->json([
             'message' => 'successfully get books',
             'status' => true,
