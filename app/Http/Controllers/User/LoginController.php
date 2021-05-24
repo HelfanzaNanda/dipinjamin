@@ -62,6 +62,14 @@ class LoginController extends Controller
 
 	public function loginProvider(Request $request)
     {
+		$checkUser = User::where('email', $request->email)->where('provider_id', null)->first();
+		if ($checkUser) {
+			return response()->json([
+				'message' => 'akun anda sudah terdaftar',
+				'status' => false,
+				'data' => (object)[],
+			], Response::HTTP_BAD_REQUEST);
+		}
 		try {
 			$user = User::where('provider_id', $request->provider_id)
 			->where('provider_name', $request->provider_name)->first();
