@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Order;
 
+use App\Http\Resources\DeliveryAddresses\DeliveryAddressesResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class OrderResource extends JsonResource
@@ -25,9 +26,7 @@ class OrderResource extends JsonResource
             'duration' => $this->duration,
             'first_day_borrow' => $this->first_day_borrow,
             'last_day_borrow' => $this->last_day_borrow,
-            'address' => $this->address,
-            'lat' => $this->lat,
-            'lng' => $this->lng,
+            'address' => new DeliveryAddressesResource($this->delivery_address)
 		];
     }
 }

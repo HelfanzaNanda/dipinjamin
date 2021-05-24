@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddLatLngToDeliveryAddresses extends Migration
+class AddDeliveryAddressIdToOrders extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class AddLatLngToDeliveryAddresses extends Migration
      */
     public function up()
     {
-        Schema::table('delivery_addresses', function (Blueprint $table) {
-            $table->text('lat')->nullable()->after('address');
-			$table->text('lng')->nullable();
+        Schema::table('orders', function (Blueprint $table) {
+            $table->foreignId('delivery_address_id')->after('owner_id');
         });
     }
 
@@ -26,9 +25,8 @@ class AddLatLngToDeliveryAddresses extends Migration
      */
     public function down()
     {
-        Schema::table('delivery_addresses', function (Blueprint $table) {
-            $table->dropColumn('lat');
-            $table->dropColumn('lng');
+        Schema::table('orders', function (Blueprint $table) {
+            $table->dropColumn('delivery_address_id');
         });
     }
 }

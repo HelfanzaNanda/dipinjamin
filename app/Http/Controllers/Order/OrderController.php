@@ -51,23 +51,16 @@ class OrderController extends Controller
             $order = Order::create([
                 'book_id' => $request->book_id,
                 'borrower_id' => auth()->id(),
+				'delivery_address_id' => $request->delivery_address_id,
                 'owner_id' => $request->owner_id,
                 'duration' => $this->checkDuration($request->duration)['duration_in_week'],
                 'first_day_borrow' => now(),
                 'last_day_borrow' => $this->checkDuration($request->duration)['last_day_borrow'],
             ]);
-    
-            
-            $orderDetail = OrderDetail::create([
-                'order_id' => $order->id,
-                'address' => $request->address,
-                'lat' => $request->lat,
-                'lng' => $request->lng,
-            ]);
 
             Media::create([
-                'model_type' => OrderDetail::class,
-                'model_id' => $orderDetail->id,
+                'model_type' => Order::class,
+                'model_id' => $order->id,
                 'filename' => $this->uploadImage($request->ktp)
             ]);
 
@@ -121,7 +114,7 @@ class OrderController extends Controller
 
     public function byBorrower()
     {
-        $orders =  Order::with('order_details')
+        $orders =  Order::with('delivery_address')
 		->where('borrower_id', auth()->id())->get();
         return response()->json([
             'message' => 'successfully get order me',
@@ -132,7 +125,7 @@ class OrderController extends Controller
 
 	public function byOwner()
     {
-        $orders =  Order::with('order_details')
+        $orders =  Order::with('delivery_address')
 		->where('owner_id', auth()->id())->get();
         return response()->json([
             'message' => 'successfully get order me',

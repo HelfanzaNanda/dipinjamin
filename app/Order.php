@@ -13,11 +13,6 @@ class Order extends Model
         return $this->belongsTo(Book::class);
     }
 
-    public function order_details()
-    {
-        return $this->hasMany(OrderDetail::class);
-    }
-
     public function borrower()
     {
         return $this->belongsTo(User::class);
@@ -27,4 +22,9 @@ class Order extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+	public function delivery_address()
+	{
+		return $this->belongsTo(DeliveryAddresses::class);
+	}
 }
