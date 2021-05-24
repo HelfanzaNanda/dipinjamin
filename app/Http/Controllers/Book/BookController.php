@@ -100,7 +100,7 @@ class BookController extends Controller
 			Media::create([
 				'model_type' => Book::class,
 				'model_id' => $book->id,
-				'filename' => 'uploads/books/'. $this->uploadImageLocal($request->file('image'), 'books')
+				'filename' => url() .'public/uploads/books/'. $this->uploadImageLocal($request->file('image'), 'books')
 			]);
 
 			// Media::create([
