@@ -18,12 +18,18 @@ class BookController extends Controller
     
     public function new()
     {
-        $books = Book::where('owner_id', '!=', auth()->id())->latest()->get();
-        return response()->json([
-            'message' => 'successfully get books',
-            'status' => true,
-            'data' => BookResource::collection($books)
-        ], Response::HTTP_OK);
+		if (auth()->check()) {
+			$books = Book::where('owner_id', '!=', auth()->id())->latest()->get();
+		}else{
+			$books = Book::latest()->get();
+		}
+
+		return response()->json([
+			'message' => 'successfully get books',
+			'status' => true,
+			'data' => BookResource::collection($books)
+		], Response::HTTP_OK);	
+        
     }
 
     public function recommended()
