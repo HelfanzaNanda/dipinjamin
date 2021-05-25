@@ -15,6 +15,7 @@ class DeliveryAddressesResource extends JsonResource
     public function toArray($request)
     {
         return [
+			'id' => $this->id,
 			'provinsi_id' => $this->provinsi_id,
 			'provinsi' => $this->provinsi,
 			'kabupaten_id' => $this->kabupaten_id,
