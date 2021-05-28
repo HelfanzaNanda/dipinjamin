@@ -55,3 +55,4 @@ Route::prefix('carts')->middleware('auth:api')->group(function(){
 	Route::post('', 'Cart\CartController@store');
 	Route::post('{id}/delete', 'Cart\CartController@delete');
 });
+Route::get('check-user-is-added-cart/{bookId}', 'Cart/CheckUserIsAddedCartController')->middleware('auth:api');
