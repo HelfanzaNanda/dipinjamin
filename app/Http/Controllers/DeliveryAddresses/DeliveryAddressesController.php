@@ -19,7 +19,7 @@ class DeliveryAddressesController extends Controller
 			'message' => 'successfully get addressess',
 			'status' => true,
 			'data' => DeliveryAddressesResource::collection($addresses)
-		]);
+		], Response::HTTP_OK);
 	}
 	public function store(Request $request)
 	{
@@ -49,7 +49,7 @@ class DeliveryAddressesController extends Controller
 			'message' => 'successfully created addresses',
 			'status' => true,
 			'data' => (object)[]
-		]);
+		], Response::HTTP_CREATED);
 	}
 
 	public function delete($id)
@@ -59,6 +59,24 @@ class DeliveryAddressesController extends Controller
 			'message' => 'successfully deleted Addresses',
 			'status' => true,
 			'data' => (object)[]
-		]);
+		], Response::HTTP_OK);
+	}
+
+	public function get($id)
+	{
+		$address = DeliveryAddresses::where('id', $id)->first();
+		if ($address) {
+			return response()->json([
+				'message' => 'successfully get address',
+				'status' => true,
+				'data' => new DeliveryAddressesResource($address)
+			], Response::HTTP_OK);
+		}
+
+		return response()->json([
+			'message' => 'address not found',
+			'status' => false,
+			'data' => (object)[]
+		], Response::HTTP_NOT_FOUND);
 	}
 }

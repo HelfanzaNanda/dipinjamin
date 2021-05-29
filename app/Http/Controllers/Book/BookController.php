@@ -147,6 +147,23 @@ class BookController extends Controller
         ],Response::HTTP_OK);
     }
 
+	public function getBookMe($id)
+	{
+		$book = Book::where('id', $id)->first();
+        if ($book) {
+			return response()->json([
+				'message' => 'successfully get book',
+				'status' => true,
+				'data' => new BookResource($book)
+			],Response::HTTP_OK);
+		}
+		return response()->json([
+            'message' => 'book not found',
+            'status' => false,
+            'data' => (object)[]
+        ],Response::HTTP_NOT_FOUND);
+	}
+
     public function delete($id)
     {
         Book::destroy($id);

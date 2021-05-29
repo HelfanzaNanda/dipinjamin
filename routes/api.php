@@ -21,6 +21,7 @@ Route::prefix('books')->group(function(){
     
     Route::middleware('auth:api')->group(function(){
         Route::get('me', 'Book\BookController@me');
+        Route::get('{id}/me', 'Book\BookController@getBookMe');
         Route::post('store', 'Book\BookController@store');
         Route::delete('/{id}/delete', 'Book\BookController@delete');
     });
@@ -47,12 +48,13 @@ Route::prefix('user')->middleware('auth:api')->group(function(){
 Route::prefix('delivery-addresses')->middleware('auth:api')->group(function(){
 	Route::get('', 'DeliveryAddresses\DeliveryAddressesController@index');
 	Route::post('', 'DeliveryAddresses\DeliveryAddressesController@store');
+	Route::get('{id}/get', 'DeliveryAddresses\DeliveryAddressesController@get');
 	Route::delete('{id}/delete', 'DeliveryAddresses\DeliveryAddressesController@delete');
 });
 
 Route::prefix('carts')->middleware('auth:api')->group(function(){
 	Route::get('', 'Cart\CartController@index');
 	Route::post('', 'Cart\CartController@store');
-	Route::post('{id}/delete', 'Cart\CartController@delete');
+	Route::delete('{id}/delete', 'Cart\CartController@delete');
 });
 //Route::get('check-user-is-added-cart/{bookId}', 'Cart/CheckUserIsAddedCartController')->middleware('auth:api');

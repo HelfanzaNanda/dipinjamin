@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Cart;
 
 use App\Cart;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Cart\CartResource;
-use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class CartController extends Controller
 {
@@ -16,7 +17,7 @@ class CartController extends Controller
 			'message' => 'successfully get carts',
 			'status' => true,
 			'data' => CartResource::collection($carts)
-		]);
+		], Response::HTTP_OK);
 	}
 
 	public function store(Request $request)
@@ -28,7 +29,7 @@ class CartController extends Controller
 			'message' => 'successfully add to cart',
 			'status' => true,
 			'data' => (object)[]
-		]);
+		], Response::HTTP_CREATED);
 	}
 
 	public function delete($id)
@@ -38,6 +39,6 @@ class CartController extends Controller
 			'message' => 'successfully delete cart',
 			'status' => true,
 			'data' => (object)[]
-		]);
+		], Response::HTTP_OK);
 	}
 }

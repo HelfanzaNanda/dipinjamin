@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Cart;
 
 use App\Cart;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 class CheckUserIsAddedCartController extends Controller
 {
@@ -22,13 +23,13 @@ class CheckUserIsAddedCartController extends Controller
 				'message' => 'user is added cart',
 				'status' => true,
 				'data' => false
-			]);
+			], Response::HTTP_OK);
 		}
 
 		return response()->json([
 			'message' => 'user isnt added cart',
 			'status' => true,
 			'data' => true
-		]);
+		], Response::HTTP_OK);
     }
 }
