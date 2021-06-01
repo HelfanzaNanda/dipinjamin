@@ -4,6 +4,7 @@ namespace App\Http\Resources\Book;
 
 use App\Http\Resources\Category\CategoryResource;
 use App\Http\Resources\Media\MediaResource;
+use App\Http\Resources\User\UserResource;
 use App\Order;
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -31,7 +32,7 @@ class BookResource extends JsonResource
         return [
             'id' => $this->id,
             'category' => new CategoryResource($this->category),
-            'owner' => $this->owner->name,
+            'owner' => new UserResource($this->owner),
             'title' => $this->title,
             'description' => $this->description,
             'writer' => $this->writer,
