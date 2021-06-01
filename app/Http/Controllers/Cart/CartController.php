@@ -12,7 +12,7 @@ class CartController extends Controller
 {
     public function index()
 	{
-		$carts = Cart::where('borrwer_id', auth()->id())->get();
+		$carts = Cart::where('borrower_id', auth()->id())->get();
 		return response()->json([
 			'message' => 'successfully get carts',
 			'status' => true,

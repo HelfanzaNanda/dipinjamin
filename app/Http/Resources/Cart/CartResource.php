@@ -19,7 +19,7 @@ class CartResource extends JsonResource
 			'book' => new BookResource($this->book),
 			'owner' => $this->owner->name,
 			'owner_id' => $this->owner->id,
-			'borrwoer' => $this->borrower->name,
+			'borrower' => $this->borrower->name,
 		];
     }
 }
