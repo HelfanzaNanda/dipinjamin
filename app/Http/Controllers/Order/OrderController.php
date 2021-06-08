@@ -68,7 +68,6 @@ class OrderController extends Controller
             $message = "ada yg mau pinjam buku anda";
             $this->notification($message, $owner->fcm_token);
 
-
             DB::commit();
             return response()->json([
                 'message' => 'successfully to order',

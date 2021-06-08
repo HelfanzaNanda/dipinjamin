@@ -2,10 +2,8 @@
 
 namespace App\Traits;
 
-use LaravelFCM\Message\OptionsBuilder;
-use LaravelFCM\Message\PayloadDataBuilder;
-use LaravelFCM\Message\PayloadNotificationBuilder;
-use FCM;
+use LaravelFCM\Facades\FCM;
+use LaravelFCM\Message\{OptionsBuilder, PayloadDataBuilder, PayloadNotificationBuilder};
 
 trait FirebaseTrait {
 
@@ -20,9 +18,9 @@ trait FirebaseTrait {
         $dataBuilder->addData(['a_data' => 'my_data']);
         $option = $optionBuilder->build();
         $notification = $notificationBuilder->build();
-        $_data = $dataBuilder->build();
+        $data = $dataBuilder->build();
         
-        FCM::sendTo($fcm_token, $option, $notification, $_data);
+        FCM::sendTo($fcm_token, $option, $notification, $data);
     }
 
 }
