@@ -61,7 +61,7 @@ class OrderController extends Controller
             Media::create([
                 'model_type' => Order::class,
                 'model_id' => $order->id,
-                'filename' => $this->uploadImage($request->ktp)
+                'filename' => $this->uploadImageLocal($request->ktp, 'orders')
             ]);
 
             $owner = User::where('id', $request->owner_id)->first();
