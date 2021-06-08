@@ -92,22 +92,18 @@ class OrderController extends Controller
     // 4 = 1 bulan
     private function checkDuration($duration)
     {
-        if ($duration == 1) {
-            $duration_in_week = '1 Minggu';
+        if ($duration == "1 Minggu") {
             $last_day_borrow = Carbon::now()->addWeeks(1);
-        }elseif($duration == 2){
-            $duration_in_week = '2 Minggu';
+        }elseif($duration == "2 Minggu"){
             $last_day_borrow = Carbon::now()->addWeeks(2);
-        }elseif($duration == 3){
-            $duration_in_week = '3 Minggu';
+        }elseif($duration == "3 Minggu"){
             $last_day_borrow = Carbon::now()->addWeeks(3);
         }else{
-            $duration_in_week = '1 Bulan';
             $last_day_borrow = Carbon::now()->addMonths(1);
         }
 
         return [
-            'duration_in_week' => $duration_in_week,
+            'duration_in_week' => $duration,
             'last_day_borrow' => $last_day_borrow,
         ];
     }
