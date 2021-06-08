@@ -174,4 +174,19 @@ class BookController extends Controller
             'data' => (object)[]
         ], Response::HTTP_OK);
     }
+
+	public function byCategory($category_id)
+	{
+		if (auth()->guard('api')->check()) {
+			$books = Book::where('category_id', $category_id)->where('owner_id', '!=', auth()->guard('api')->id())->get();
+		}else{
+			$books = Book::where('category_id', $category_id)->get();
+		}
+
+		return response()->json([
+            'message' => 'successfully get books',
+            'status' => true,
+            'data' => BookResource::collection($books)
+        ], Response::HTTP_OK);
+	}
 }

@@ -32,9 +32,9 @@ class OrderController extends Controller
 			'book_id' => 'required',
 			'owner_id' => 'required',
 			'duration' => 'required',
-			'address' => 'required',
-			'lat' => 'required',
-			'lng' => 'required',
+			//'address' => 'required',
+			// 'lat' => 'required',
+			// 'lng' => 'required',
 			'ktp' => 'required',
 		]);
 

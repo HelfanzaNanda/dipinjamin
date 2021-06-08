@@ -19,6 +19,7 @@ Route::middleware('cors')->group(function(){
 		Route::get('new', 'Book\BookController@new');
 		Route::get('recommended', 'Book\BookController@recommended');
 		Route::get('most', 'Book\BookController@most');
+		Route::get('category/{id}', 'Book\BookController@byCategory');
 		Route::get('{id}/get', 'Book\BookController@get');
 		
 		Route::middleware('auth:api')->group(function(){
@@ -59,6 +60,7 @@ Route::middleware('cors')->group(function(){
 		Route::post('', 'Cart\CartController@store');
 		Route::delete('{id}/delete', 'Cart\CartController@delete');
 	});
-	Route::get('check-user-is-added-cart/{bookId}', 'Cart\CheckUserIsAddedCartController')->middleware('auth:api');
+	
+	Route::get('check-user-is-added-cart/{bookId}', 'Cart\CheckUserIsAddedCartController');
 
 });

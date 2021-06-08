@@ -17,12 +17,20 @@ class CheckUserIsAddedCartController extends Controller
      */
     public function __invoke(Request $request, $book_id)
     {
-        $cart = Cart::where('book_id', $book_id)->where('borrower_id', auth()->guard('api')->id())->first();
-		if ($cart) {
+		if (auth()->guard('api')->check()) {
+			$cart = Cart::where('book_id', $book_id)->where('borrower_id', auth()->guard('api')->id())->first();
+			if ($cart) {
+				return response()->json([
+					'message' => 'user is added cart',
+					'status' => true,
+					'data' => false
+				], Response::HTTP_OK);
+			}
+
 			return response()->json([
-				'message' => 'user is added cart',
+				'message' => 'user isnt added cart',
 				'status' => true,
-				'data' => false
+				'data' => true
 			], Response::HTTP_OK);
 		}
 
@@ -31,5 +39,6 @@ class CheckUserIsAddedCartController extends Controller
 			'status' => true,
 			'data' => true
 		], Response::HTTP_OK);
+        
     }
 }
