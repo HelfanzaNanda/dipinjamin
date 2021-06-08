@@ -188,4 +188,19 @@ class BookController extends Controller
             'data' => BookResource::collection($books)
         ], Response::HTTP_OK);
 	}
+
+	public function search($title)
+	{
+		$books = Book::where('title', 'like', '%' .$title. '%');
+		if (auth()->guard('api')->check()) {
+			$books->where('owner_id', '!=', auth()->guard('api')->id());
+		}
+		$books->latest()->get();
+
+		return response()->json([
+            'message' => 'successfully get books',
+            'status' => true,
+            'data' => BookResource::collection($books)
+        ], Response::HTTP_OK);
+	}
 }

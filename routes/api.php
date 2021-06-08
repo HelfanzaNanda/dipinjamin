@@ -20,6 +20,7 @@ Route::middleware('cors')->group(function(){
 		Route::get('recommended', 'Book\BookController@recommended');
 		Route::get('most', 'Book\BookController@most');
 		Route::get('category/{id}', 'Book\BookController@byCategory');
+		Route::get('search/{title}', 'Book\BookController@search');
 		Route::get('{id}/get', 'Book\BookController@get');
 		
 		Route::middleware('auth:api')->group(function(){
