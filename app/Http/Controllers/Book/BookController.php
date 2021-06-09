@@ -191,11 +191,11 @@ class BookController extends Controller
 
 	public function search($title)
 	{
-		$books = Book::where('title', 'like', '%' .$title. '%');
+		$query = Book::where('title', 'like', '%' .$title. '%');
 		if (auth()->guard('api')->check()) {
-			$books->where('owner_id', '!=', auth()->guard('api')->id());
+			$query->where('owner_id', '!=', auth()->guard('api')->id());
 		}
-		$books->latest()->get();
+		$books = $query->latest()->get();
 
 		return response()->json([
             'message' => 'successfully get books',
