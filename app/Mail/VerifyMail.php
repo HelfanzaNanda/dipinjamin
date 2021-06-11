@@ -31,7 +31,7 @@ class VerifyMail extends Mailable
      */
     public function build()
     {
-        return $this->from('dipinjamin@dipinjamin.com', 'Dipinjamin')
+        return $this->from('dipinjamin@alfara-dev.com', 'Dipinjamin')
 		->subject('Verifikasi Email')->markdown('emails.verify-mail');
     }
 }
