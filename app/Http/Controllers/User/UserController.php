@@ -47,8 +47,8 @@ class UserController extends Controller
 		return response()->json([
 			'message' => 'successfully update profile',
 			'status' => true,
-			'data' => (object)[]
-		]);
+			'data' => new UserResource(auth()->guard('api')->user())
+		], Response::HTTP_OK);
 	}
 
 	public function updatePassword(Request $request)
@@ -72,7 +72,7 @@ class UserController extends Controller
 		return response()->json([
 			'message' => 'successfully update password',
 			'status' => true,
-			'data' => (object)[]
-		]);
+			'data' => new UserResource(auth()->guard('api')->user())
+		], Response::HTTP_OK);
 	}
 }
