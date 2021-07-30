@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\User\UserResource;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -65,7 +66,7 @@ class UserController extends Controller
 		}
 		
 		auth()->guard('api')->user()->update([
-			'password' => $request->password
+			'password' => Hash::make($request->password)
 		]);
 
 		return response()->json([
