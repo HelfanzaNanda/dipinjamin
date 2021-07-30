@@ -12,7 +12,7 @@ class UserController extends Controller
 {
     public function currentUser()
 	{
-		$user = auth()->user();
+		$user = auth()->guard('api')->user();
 		return response()->json([
 			'message' => 'successfully get current user',
 			'status' => true,
@@ -25,7 +25,7 @@ class UserController extends Controller
 		$validator = Validator::make($request->all(), [
 			'first_name' => 'required', 
 			'last_name' => 'required', 
-			'email' => 'required|email|unique:users,email,'.auth()->id(), 
+			'email' => 'required|email|unique:users,email,'.auth()->guard('api')->user()->id(), 
 			'phone' => 'required', 
 		]);
 
@@ -37,7 +37,7 @@ class UserController extends Controller
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
 		}
 		
-		auth()->user()->update([
+		auth()->guard('api')->user()->update([
 			'name' => $request->first_name . ' ' .$request->last_name,
 			'email' => $request->email,
 			'phone' => $request->phone
@@ -64,12 +64,12 @@ class UserController extends Controller
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
 		}
 		
-		auth()->user()->update([
+		auth()->guard('api')->user()->update([
 			'password' => $request->password
 		]);
 
 		return response()->json([
-			'message' => 'successfully update profile',
+			'message' => 'successfully update password',
 			'status' => true,
 			'data' => (object)[]
 		]);
