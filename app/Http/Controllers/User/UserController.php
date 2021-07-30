@@ -26,7 +26,7 @@ class UserController extends Controller
 		$validator = Validator::make($request->all(), [
 			'first_name' => 'required', 
 			'last_name' => 'required', 
-			'email' => 'required|email|unique:users,email,'.auth()->guard('api')->user()->id(), 
+			'email' => 'required|email|unique:users,email,'.auth()->guard('api')->id(), 
 			'phone' => 'required', 
 		]);
 
