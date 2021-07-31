@@ -36,7 +36,7 @@ class DeliveryAddressesController extends Controller
 
 		if ($validator->fails()) {
 			return response()->json([
-                'message' => 'http unprocessable entity',
+                'message' => 'lengkapi semua field',
                 'status' => false,
                 'data' => $validator->getMessageBag()
             ], Response::HTTP_UNPROCESSABLE_ENTITY);

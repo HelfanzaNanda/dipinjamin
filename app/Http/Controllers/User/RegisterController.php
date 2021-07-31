@@ -28,7 +28,7 @@ class RegisterController extends Controller
 
 		if ($validator->fails()) {
 			return response()->json([
-                'message' => 'http unprocessable entity',
+                'message' => 'lengkapi form, atau email anda sudah terdaftar',
                 'status' => false,
                 'data' => $validator->getMessageBag()
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
