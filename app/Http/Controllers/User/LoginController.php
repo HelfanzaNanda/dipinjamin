@@ -68,7 +68,7 @@ class LoginController extends Controller
 				'message' => 'akun anda sudah terdaftar',
 				'status' => false,
 				'data' => (object)[],
-			], Response::HTTP_OK);
+			], Response::HTTP_UNAUTHORIZED);
 		}
 		try {
 			$user = User::where('provider_id', $request->provider_id)
