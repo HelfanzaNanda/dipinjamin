@@ -109,7 +109,7 @@ class OrderController extends Controller
 
     public function byBorrower()
     {
-        $orders =  Order::with('delivery_address')
+        $orders =  Order::with('delivery_address', 'owner')
 		->where('borrower_id', auth()->id())->latest()->get();
         return response()->json([
             'message' => 'successfully get order me',
@@ -120,7 +120,7 @@ class OrderController extends Controller
 
 	public function byOwner()
     {
-        $orders =  Order::with('delivery_address')
+        $orders =  Order::with('delivery_address', 'borrower')
 		->where('owner_id', auth()->id())->latest()->get();
         return response()->json([
             'message' => 'successfully get order me',
