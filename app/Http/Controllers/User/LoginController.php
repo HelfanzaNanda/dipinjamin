@@ -103,7 +103,7 @@ class LoginController extends Controller
 			}
 		} catch (\Throwable $th) {
 			return response()->json([
-				'message' => $th->getMessage(),
+				'message' => 'akun sudah terdaftar',
 				'status' => false,
 				'data' => (object)[],
 			], Response::HTTP_INTERNAL_SERVER_ERROR);
